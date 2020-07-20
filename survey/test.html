@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>调查问卷</title>
+    <script src="Flotr2-master/flotr2.js"></script>
+  </head>
+
+  <body>
+    <form>
+      <table>
+        <th colspan="4" style="text-align: center;">调查问卷</th>
+        <tr>
+          <td colspan="4">1.能提几桶水?</td>
+        </tr>
+        <tr class="options">
+          <td><input type="radio" name="strength-1" value="1" />1</td>
+          <td><input type="radio" name="strength-1" value="3" />3</td>
+          <td><input type="radio" name="strength-1" value="5" />5</td>
+          <td><input type="radio" name="strength-1" value="6" />6</td>
+        </tr>
+        <tr>
+          <td colspan="4">2.跑一百米多少秒?</td>
+        </tr>
+        <tr class="options">
+          <td><input type="radio" name="speed-1" value="1" />18</td>
+          <td><input type="radio" name="speed-1" value="3" />40</td>
+          <td><input type="radio" name="speed-1" value="5" />50</td>
+          <td><input type="radio" name="speed-1" value="6" />70</td>
+        </tr>
+        <tr>
+          <td colspan="4">2.年纪多大?</td>
+        </tr>
+        <tr class="options">
+          <td><input type="radio" name="age-1" value="1" />18</td>
+          <td><input type="radio" name="age-1" value="3" />40</td>
+          <td><input type="radio" name="age-1" value="5" />50</td>
+          <td><input type="radio" name="age-1" value="6" />70</td>
+        </tr>
+        <tr>
+          <td colspan="4" style="text-align: right;">
+            <button id="btn-submit">提交</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div id="editor-render-0" style="width: 600px; height: 300px;"></div>
+  </body>
+  <script type="text/javascript">
+    var submitBtn = document.getElementById('btn-submit');
+    var renderContainer = document.getElementById('editor-render-0');
+
+    function drawGraph(e) {
+      // 禁止浏览器默认行为
+      e.preventDefault();
+      var optionValueMap = getAllOptions();
+      basic_radar(optionValueMap);
+    }
+
+    function HTMLCollectionToArray(collection) {
+      return Array.prototype.slice.call(collection);
+    }
+
+    function getAllOptions() {
+      var optionsElement = document.getElementsByClassName('options');
+      var options = HTMLCollectionToArray(optionsElement);
+      var optionValueMap = {};
+      var index = 0;
+      options.forEach(function (option) {
+        const items = HTMLCollectionToArray(option.children);
+        items.forEach(function (i) {
+          if (i.firstElementChild.checked) {
+            optionValueMap[index] = i.textContent;
+          }
+        });
+        index++;
+      });
+      return optionValueMap;
+    }
+
+    function basic_radar(optionValueMap) {
+      var s1 = {
+          label: 'Actual',
+          data: [
+            [0, optionValueMap[0]/6*70],
+            [1, optionValueMap[1]],
+            [2, optionValueMap[2]],
+          ],
+        },
+        graph,
+        ticks;
+      ticks = [
+        [0, 'strength'],
+        [1, 'speed'],
+        [2, 'age'],
+      ];
+      graph = Flotr.draw(renderContainer, [s1], {
+        radar: { show: true },
+        grid: { circular: true, minorHorizontalLines: true },
+        yaxis: { min: 0, max: 70, minorTickFreq: 2 },
+        xaxis: { ticks: ticks },
+        mouse: { track: true },
+      });
+    }
+
+    submitBtn.addEventListener('click', drawGraph);
+  </script>
+</html>
