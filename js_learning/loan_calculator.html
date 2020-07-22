@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Loan Calculator</title>
+    <style>
+        .output {
+            font-weight: bold;
+        }
+
+        #payment {
+            text-decoration: underline;
+        }
+
+        #graph {
+            border: solid black 1px;
+        }
+
+        th, td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>Enter Loan Data:</th>
+        <td></td>
+        <th>Loan Balance, Cumulative Equity,and Interest Payments</th>
+    </tr>
+    <tr>
+        <td>Amount of the loan ($):</td>
+        <td><input id="amount" onchange="calculate();"></td>
+        <td rowspan=8>
+            <canvas id="graph" width="400" height="250"></canvas>
+        </td>
+    </tr>
+    <tr>
+        <td>Annual interest(%)</td>
+        <td><input id="apr" onchange="calculate()"></td>
+    </tr>
+    <tr>
+        <td>Repayment period(years):</td>
+        <td><input id="years" onchange="calculate()"></td>
+    </tr>
+    <tr>
+        <td>Zipcode(to find lenders:)</td>
+        <input id="zipcode" onchange="calculate()">
+    </tr>
+    <tr>
+        <th>Approximate Payments:</th>
+        <td>
+            <button onchange="calculate()">Calculate</button>
+        </td>
+    </tr>
+    <tr>
+        <td>Monthly payment:</td>
+        <td>$<span class="output" id="payment"></span></td>
+    </tr>
+    <tr>
+        <td>Total payment:</td>
+        <td>$<span class="output" id="total"></span></td>
+    </tr>
+    <tr>
+        <td>Total interest:</td>
+        <td>$<span class="output" id="totalinterest"></span></td>
+    </tr>
+    <tr>
+        <th>Sponsors:</th>
+        <td colspan=2>
+            Apply for your loan with one of these fine lenders:
+            <div id="lenders"></div>
+        </td>
+    </tr>
+</table>
+<script>
+    "use strict";//如果浏览器支持则开启ECMAScript 5的严格模式
+    function caculate() {
+        var amount = document.getElementById("amount");
+        var apr = document.getElementById("apr");
+        var years = document.getElementById("years");
+        var zipcode = document.getElementById("zipcode");
+        var payment = document.getElementById("payment");
+        var total = document.getElementById("total");
+        var totalinterest = document.getElementById("totalinterest");
+
+        //假设输入合法，将百分比转换为小数，并从年利率转换为月利率
+        var principal = parseFloat(amount.value);//贷款数  10000
+        var interest = parseFloat(apr.value) / 100 / 12;//月利率  12%/100/12=0.1
+        var payments = parseFloat(years.value) * 12;//偿还月数  2*12=24
+
+        //月度赔付 表示不懂
+        var x = Math.pow(1 + interest, payments); // (1+0.1)的24次方=9.8497326758076
+        var monthly = (principal * x * interest) / (x - 1); //10000*9.8497326758076*0.1/8.8497326758076
+
+        //校验是否再js数字范围内
+        if (isFinite(monthly)) {
+            payment.innerHTML = monthly.toFixed(2);//四舍五入取2位小数
+            total.innerHTML = (monthly * payments).toFixed(2);
+            totalinterest.innerHTML = ((monthly * payments) - principal).toFixed(2);
+            //保存用户数据
+            save(amount.value, apr.value, years.value, zipcode.value);
+            //找到并展示放贷人,但忽略网络错误
+            try {
+                getLenders(amount.value, apr.value, years.value, zipcode.value);
+            } catch (e) {
+                //忽略
+            }
+            //画图
+            chart(principal, interest, monthly, payments);
+        } else {
+            //代表数字是无穷大或者不是数字，数据非法
+            //清空输出数据
+            payment.innerHTML = "";
+            total.innerHTML = "";
+            totalinterest.innerHTML = "";
+            chart();
+        }
+    }
+
+    function save(amount, apr, years, zipcode) {
+        if (window.localStorage) {//浏览器支持才运行
+            localStorage.loan_amount = amount;
+            localStorage.loan_apr = apr;
+            localStorage.loan_years = years;
+            localStorage.loan_zipcode = zipcode;
+        }
+    }
+
+    //还原数据
+    window.onload = function () {
+        if (window.localStorage && localStorage.loan_amount) {//值存在
+            document.getElementById("amount").value = localStorage.loan_amount;
+            document.getElementById("apr").value = localStorage.loan_apr;
+            document.getElementById("years").value = localStorage.loan_years;
+            document.getElementById("zipcode").value = localStorage.loan_zipcode;
+        }
+    }
+
+    //从服务器找到放贷人列表，该例子未实现
+    function getLenders(amount, apr, years, zipcode) {
+        if (!window.XMLHttpRequest) return;
+        var ad = document.getElementById("lenders");
+        if(!ad) return;
+        var url = "";//url编码，需要根据服务器的接口api来拼接
+        var req = new XMLHttpRequest();
+        req.open("GET", url);
+        //TODO
+    }
+</script>
+</body>
+</html>
