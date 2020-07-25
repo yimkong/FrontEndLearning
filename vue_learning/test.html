@@ -8,55 +8,57 @@
 </head>
 
 <body>
-    <div id="test">
-        <table>
-            <th colspan="4" style="text-align:center">调查问卷</th>
-            <tr>
-                <td colspan="4">1.能提几桶水?</td>
-            </tr>
-            <tr>
-                <td><input type="radio" name="strength-1" value="1">1</td>
-                <td><input type="radio" name="strength-1" value="3">3</td>
-                <td><input type="radio" name="strength-1" value="5">5</td>
-                <td><input type="radio" name="strength-1" value="6">6</td>
-            </tr>
-            <tr>
-                <td colspan="4">2.跑一百米多少秒?</td>
-            </tr>
-            <tr>
-                <td><input type="radio" name="speed-1" value="1">18</td>
-                <td><input type="radio" name="speed-1" value="3">40</td>
-                <td><input type="radio" name="speed-1" value="5">50</td>
-                <td><input type="radio" name="speed-1" value="6">70</td>
-            </tr>
-            <tr>
-                <td colspan="4">2.年纪多大?</td>
-            </tr>
-            <tr>
-                <td><input type="radio" name="age-1" value="1">18</td>
-                <td><input type="radio" name="age-1" value="3">40</td>
-                <td><input type="radio" name="age-1" value="5">50</td>
-                <td><input type="radio" name="age-1" value="6">70</td>
-            </tr>
-            <tr>
-                <td colspan="4" style="text-align:right"><button v-on:click="greet">Submit</button></td>
-            </tr>
-        </table>
-    </div>
-    <script>
-    var result = { age: 0, strength: 0, speed: 0 }
+<div id="test">
+    <table>
+        <th colspan="4" style="text-align:center">调查问卷</th>
+        <tr>
+            <td colspan="4">1.能提几桶水?</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="strength-1" value="1">1</td>
+            <td><input type="radio" name="strength-1" value="3">3</td>
+            <td><input type="radio" name="strength-1" value="5">5</td>
+            <td><input type="radio" name="strength-1" value="6">6</td>
+        </tr>
+        <tr>
+            <td colspan="4">2.跑一百米多少秒?</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="speed-1" value="1">18</td>
+            <td><input type="radio" name="speed-1" value="3">40</td>
+            <td><input type="radio" name="speed-1" value="5">50</td>
+            <td><input type="radio" name="speed-1" value="6">70</td>
+        </tr>
+        <tr>
+            <td colspan="4">2.年纪多大?</td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="age-1" value="1">18</td>
+            <td><input type="radio" name="age-1" value="3">40</td>
+            <td><input type="radio" name="age-1" value="5">50</td>
+            <td><input type="radio" name="age-1" value="6">70</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align:right">
+                <button v-on:click="greet">Submit</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    var result = {age: 0, strength: 0, speed: 0}
     new Vue({
         el: '#test',
         data: {
             picked: 'Runoob'
         },
         methods: {
-            greet: function(event) {
+            greet: function (event) {
                 alert('Hello ' + this.name + '!');
             }
         }
     })
-    </script>
+</script>
 </body>
 
 </html>

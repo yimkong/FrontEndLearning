@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../source/vue.min.js" charset="utf-8"></script>
+</head>
+<body>
+<div id="app-7">
+    <ol>
+        <!--构建组件实例-->
+        <todo-item v-for="item in groceryList"  v-bind:todo="item" v-bind:key="item.id"></todo-item>
+    </ol>
+</div>
+<script>
+    //一个组件本质上是一个拥有预定义选项的Vue实例
+    //注册组件 TODO bug can't show
+    Vue.component('todo-item', {
+        prods: ['todo'],//组件属性
+        template: '<li>{{todo.text}}}</li>'//组件模板，用来构建html代码
+    })
+    var app7 = new Vue({
+        el: '#app-7',
+        data: {
+            groceryList: [{id: 0, text: '蔬菜'}, {id: 1, text: '奶酪'}, {id: 2, text: '随便'}]
+        }
+    })
+</script>
+</body>
+</html>
