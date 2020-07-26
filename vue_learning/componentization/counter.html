@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>Title</title>
-		<script type="text/javascript" src="../source/vue.min.js" charset="utf-8"></script>
-	</head>
-	<body>
-		<div id="app">
-			<button-counter title="title1: "></button-counter>
-			<button-counter title="title2: "></button-counter>
-		</div>
-		<script type="text/javascript">
-			Vue.component('button-counter', {
-				data:function(){
-					return {count:0}
-				},
-				props: ['title'],
-				template: '<div><h1>hi...</h1><button v-on:click="count++">{{title}} You click me {{count}} times</button></div>>'
-			})
-			var vm = new Vue({
-				el: "#app",
-				data: {
-
-				}
-			})
-		</script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../source/vue.min.js" charset="utf-8"></script>
+</head>
+<body>
+<div id="app">
+    <button-counter title="title1: " @clicknow="clicknow"><!--绑定事件-->
+		<h2>hi...</h2><!--需要在模板里先加入slot标签才能显示此处的Html-->
+	</button-counter>
+    <button-counter title="title2: "></button-counter>
+</div>
+<script type="text/javascript">
+    Vue.component('button-counter', {
+        data: function () {
+            return {count: 0}
+        },
+        props: ['title'],
+        template: '<div><h1>hi...</h1><button v-on:click="clickfun">{{title}} You click me {{count}} times</button><slot></slot></div>>',
+		methods:{
+        	clickfun:function () {
+        		this.count++;
+        		this.$emit('clicknow',this.count);//手动触发事件
+			}
+		}
+    })
+    var vm = new Vue({
+        el: "#app",
+        data: {},
+		methods:{
+        	clicknow:function(e){
+        		console.log(e)
+			}
+		}
+    })
+</script>
+</body>
 </html>

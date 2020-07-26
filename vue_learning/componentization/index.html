@@ -9,10 +9,14 @@
 <div id="app-7">
     <ol>
         <!--构建组件实例-->
-        <todo-item v-for="item in groceryList"  v-bind:todo="item" v-bind:key="item.id"></todo-item>
+        <todo-item
+                v-for="item in groceryList"
+                v-bind:todo="item"
+                v-bind:key="item.id">
+        </todo-item>
     </ol>
 </div>
-<script>
+<script type="text/javascript">
     //一个组件本质上是一个拥有预定义选项的Vue实例
     //注册组件 TODO bug can't show
     Vue.component('todo-item', {
