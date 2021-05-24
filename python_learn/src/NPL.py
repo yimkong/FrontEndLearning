@@ -1,5 +1,5 @@
-
 import re
+
 
 # 你不用太关心这个函数
 def parse(text):
@@ -26,6 +26,7 @@ def parse(text):
     sorted_word_cnt = sorted(word_cnt.items(), key=lambda kv: kv[1], reverse=True)
 
     return sorted_word_cnt
+
 
 with open('in.txt', 'r') as fin:
     text = fin.read()
